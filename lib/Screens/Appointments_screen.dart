@@ -1,6 +1,3 @@
-import 'dart:html';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:healthfooddelivery/Screens/book_appointments_screen.dart';
 import 'package:healthfooddelivery/Screens/navigaton_screen.dart';
@@ -27,8 +24,10 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
               children: [
                 IconButton(
                     onPressed: () {
-                      Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => NavigationScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NavigationScreen()));
                     },
                     icon: Icon(Icons.arrow_back_ios),
                     color: Colors.black),

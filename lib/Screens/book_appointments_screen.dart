@@ -413,18 +413,11 @@ class _BookAppointmentsScreenState extends State<BookAppointmentsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 35,
-                    alignment:Alignment.center,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black)),
-                  child: IconButton(
-                    icon: audioChecked
-                        ? Icon(Icons.circle, color: greenColor, size:23)
-                        : Icon(Icons.circle_outlined, color: Colors.black,size:23),
-                    onPressed: audio,
-                  ),
+                IconButton(
+                  icon: audioChecked
+                      ? Icon(Icons.circle, color: greenColor, size:23)
+                      : Icon(Icons.circle_outlined, color: Colors.black,size:23),
+                  onPressed: audio,
                 ),
                 const Text(
                   "Audio",
@@ -434,20 +427,11 @@ class _BookAppointmentsScreenState extends State<BookAppointmentsScreen> {
                   ),
                 ),
                 const SizedBox(width: 5),
-                Container(
-                  alignment:Alignment.center,
-                  height: 35,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black)),
-                 
-                    child: IconButton(
-                      icon: videoChecked
-                           ? Icon(Icons.circle, color: greenColor, size:23)
-                          : Icon(Icons.circle_outlined, color: Colors.black, size:23),
-                      onPressed: video,
-                    ),
-                  
+                IconButton(
+                  icon: videoChecked
+                       ? Icon(Icons.circle, color: greenColor, size:23 )
+                      : Icon(Icons.circle_outlined, color: Colors.black, size:23),
+                  onPressed: video,
                 ),
                 const Text(
                   "Video",

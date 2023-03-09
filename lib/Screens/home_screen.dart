@@ -103,24 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? const Center(
                         child: CircularProgressIndicator(color: greenColor))
                     : FoodWidget(recipes: _recipes, topContainer: topContainer),
-                const DefaultTabController(
-                  length: 4,
-                  child: TabBar(
-                    tabs: [
-                      Tab(child: Text("Breakfast", style: TextStyle())),
-                      Tab(child: Text("Lunch", style: TextStyle())),
-                      Tab(child: Text("Snacks", style: TextStyle())),
-                      Tab(child: Text("Dinner", style: TextStyle())),
-                    ],
-                  ),
-                ),
-                TabBarView(children: [
-                  GridFoodWidget(recipes: _recipes, topContainer: topContainer),
-                  GridFoodWidget(recipes: _recipes, topContainer: topContainer),
-                  GridFoodWidget(recipes: _recipes, topContainer: topContainer),
-                  GridFoodWidget(recipes: _recipes, topContainer: topContainer),
-
-                ])
+              
               ],
             )));
   }
@@ -141,101 +124,43 @@ class FoodWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Flexible(
-        flex: 5,
+       // flex: 5,
 
-        //fit: FlexFit.loose,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: GridView.builder(
-            scrollDirection: Axis.horizontal,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1),
-              itemCount: _recipes.length,
-              //rphysics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                Recipe recipe = _recipes[index];
+        fit: FlexFit.tight,
+        child: ListView.builder(
+          
+            physics: BouncingScrollPhysics(),
+          
+            itemCount: _recipes.length,
+           
+            itemBuilder: (context, index) {
+              Recipe recipe = _recipes[index];
 
-                return Hero(
-                  tag: _recipes[index],
-                  child: ListTile(
-                    title: RecipeCard(
-                      title: _recipes[index].name,
-                      cookTime: _recipes[index].totalTime,
-                      rating: _recipes[index].rating.toString(),
-                      thumbnailUrl: _recipes[index].images,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FoodInfoScreen(
-                                    recipes: recipe,
-                                  )));
-                    },
+              return Hero(
+                tag: _recipes[index],
+                child: ListTile(
+                  title: RecipeCard(
+                    title: _recipes[index].name,
+                    cookTime: _recipes[index].totalTime,
+                    rating: _recipes[index].rating.toString(),
+                    thumbnailUrl: _recipes[index].images,
                   ),
-                );
-              }),
-        ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FoodInfoScreen(
+                                  recipes: recipe,
+                                )));
+                  },
+                ),
+              );
+            }),
       ),
     );
   }
 }
 
-class GridFoodWidget extends StatelessWidget {
-  const GridFoodWidget({
-    Key key,
-    @required List<Recipe> recipes,
-    @required this.topContainer,
-  })  : _recipes = recipes,
-        super(key: key);
-
-  final List<Recipe> _recipes;
-  final double topContainer;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Flexible(
-        flex: 5,
-
-        //fit: FlexFit.loose,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemCount: _recipes.length,
-              //rphysics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                Recipe recipe = _recipes[index];
-
-                return Hero(
-                  tag: _recipes[index],
-                  child: ListTile(
-                    title: RecipeCard(
-                      title: _recipes[index].name,
-                      cookTime: _recipes[index].totalTime,
-                      rating: _recipes[index].rating.toString(),
-                      thumbnailUrl: _recipes[index].images,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FoodInfoScreen(
-                                    recipes: recipe,
-                                  )));
-                    },
-                  ),
-                );
-              }),
-        ),
-      ),
-    );
-  }
-}
 
 class SearchField extends StatefulWidget {
   SearchField({

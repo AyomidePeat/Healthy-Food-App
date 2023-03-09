@@ -167,8 +167,17 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                   const SizedBox(height: 10),
                   Column(mainAxisAlignment:MainAxisAlignment.center,
                     children: [
-                      ClickButtons(
-                       text:"Create an account ",
+                      LoadingButton(
+                     child: isLoading
+                      ? const Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: AspectRatio(
+                            aspectRatio: 1 / 1,
+                            child:
+                                CircularProgressIndicator(color: Colors.white),
+                          ),
+                        )
+                      : Text("Create an account"),
                          
                         onpressed: () async {
                           setState(() {
@@ -192,6 +201,9 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                                   MaterialPageRoute(
                                       builder: (context) => LoginScreen()));
                             } else {
+                                setState(() {
+                            isLoading = false;
+                          });
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   backgroundColor: greenColor,
                                   content: Text(output,
@@ -201,9 +213,7 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                           } 
                         },
                       ),
-                         isLoading
-                      ? Center(child: Column(children: [SizedBox(height:10),CircularProgressIndicator(color: greenColor)]))
-                      : Container(),
+
                       const SizedBox(height: 10),
                       TextButtons(
                           onPressed: () {
