@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
  
+ 
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -47,7 +48,7 @@ dependencies:
   firebase_database: ^10.0.9
   firebase_storage: ^11.0.10
   cloud_firestore: ^4.3.1
-  flutter_stripe: ^7.0.0
+  #flutter_stripe: ^7.0.0
   flutter_bloc: ^8.1.1
   equatable: ^2.0.5
   carousel_pro: ^1.0.0
