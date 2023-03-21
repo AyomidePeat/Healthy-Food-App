@@ -51,7 +51,7 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SizedBox(width: size.width * 0.8),
+                      SizedBox(width: size.width * 0.7),
                       const UnderlinedTextButton(
                         text: "Skip,",
                       ),
@@ -166,6 +166,7 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                   ),
                   const SizedBox(height: 10),
                   Column(mainAxisAlignment:MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       LoadingButton(
                      child: isLoading

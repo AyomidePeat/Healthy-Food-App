@@ -323,7 +323,7 @@ class _BookAppointmentsScreenState extends State<BookAppointmentsScreen> {
             ],
           )),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
             CalenderWidget(calenderController: calenderController),

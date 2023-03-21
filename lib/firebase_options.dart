@@ -21,10 +21,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for ios - '
@@ -53,11 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBxVdjiA7fCBXXpDRQTkFzFOFt5e7gmdao',
-    appId: '1:318007098822:web:b1cbecfa5352c1cc7f06c7',
-    messagingSenderId: '318007098822',
-    projectId: 'healthy-food-delivery',
-    authDomain: 'healthy-food-delivery.firebaseapp.com',
-    storageBucket: 'healthy-food-delivery.appspot.com',
+    apiKey: 'AIzaSyBnQD_lPgAlF_a4ap16PW_7JQpBuRy0JVY',
+    appId: '1:785142456691:web:a4b5f9b15ef74e0e7de506',
+    messagingSenderId: '785142456691',
+    projectId: 'simplelogin-app',
+    authDomain: 'simplelogin-app.firebaseapp.com',
+    storageBucket: 'simplelogin-app.appspot.com',
+    measurementId: 'G-29FCLC7LTQ',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDG6vmhWHlRQBuBtJbxJu4iD7qCtRupWrI',
+    appId: '1:785142456691:android:bcc3d77028c7827e7de506',
+    messagingSenderId: '785142456691',
+    projectId: 'simplelogin-app',
+    storageBucket: 'simplelogin-app.appspot.com',
   );
 }
