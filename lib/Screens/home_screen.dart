@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthfooddelivery/Screens/search_results_screen.dart';
-import 'package:healthfooddelivery/model/product_model.dart';
+import 'package:healthfooddelivery/model/cart_model.dart';
 import 'package:healthfooddelivery/providers/user_details_provider.dart';
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
 //import 'package:healthfooddelivery/Screens/navigaton_screen.dart';
@@ -67,8 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(
     BuildContext context,
   ) {
-    // UserDetailsModel userDetailsModel =
-    //     Provider.of<UserDetailsProvider>(context).userDetails;
     return Scaffold(
         appBar: AppBar(
             actions: <Widget>[
@@ -81,16 +79,23 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Row(children: [
               const Icon(Icons.restaurant_menu, color: greenColor),
               const SizedBox(width: 10),
-              //   StreamBuilder(
-              // stream: firestore.getUserName(),
-              // builder: (context, snapshots) {
-              //   if (snapshots.hasData) {
-              //     final name = snapshots.data;
-              //     return Text("Hello ${name}",style: const TextStyle(
-              //           color: Colors.black,
-              //           fontWeight: FontWeight.bold,
-              //           fontFamily: "montserrat"));
-              //   }})
+              FutureBuilder<UserDetailsModel>(
+                future: firestore.getUserName(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<UserDetailsModel> snapshot) {
+                   {
+                    if (snapshot.hasData) {
+                      return Text(
+                        'Hello ${snapshot.data.name}!',
+                        style: TextStyle(color: Colors.black),
+                      );
+                    } else {
+                      return const Text('Username not Registered',
+                          style: TextStyle(color: Colors.black));
+                    }
+                  }
+                },
+              ),
             ]),
             iconTheme: IconThemeData(color: Colors.black)),
         body: Padding(
@@ -103,7 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? const Center(
                         child: CircularProgressIndicator(color: greenColor))
                     : FoodWidget(recipes: _recipes, topContainer: topContainer),
-              
               ],
             )));
   }
@@ -124,15 +128,12 @@ class FoodWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Flexible(
-       // flex: 5,
+        // flex: 5,
 
         fit: FlexFit.tight,
         child: ListView.builder(
-          
             physics: BouncingScrollPhysics(),
-          
             itemCount: _recipes.length,
-           
             itemBuilder: (context, index) {
               Recipe recipe = _recipes[index];
 
@@ -160,7 +161,6 @@ class FoodWidget extends StatelessWidget {
     );
   }
 }
-
 
 class SearchField extends StatefulWidget {
   SearchField({

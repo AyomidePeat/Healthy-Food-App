@@ -22,6 +22,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
+          
           hintText: widget.hint,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),

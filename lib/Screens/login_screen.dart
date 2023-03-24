@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             : Text("Login to my account"),
                         onpressed: () async {
                           setState(() {
-                            isLoading = false;
+                            isLoading = true;
                           });
                           Future.delayed(const Duration(seconds: 1));
                           String output = await authHandler.signIn(
@@ -145,12 +145,15 @@ class _LoginScreenState extends State<LoginScreen> {
           
                           if (output == "Success") {
                             UserDetailsModel userdetails =
-                                await firebaseFirestore.getName();
+                                await firebaseFirestore.getUserName();
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
                           } else {
+                            setState(() {
+                            isLoading = false;
+                          });
                             const Padding(
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: AspectRatio(

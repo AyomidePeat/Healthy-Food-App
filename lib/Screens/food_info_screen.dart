@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthfooddelivery/model/cart_model.dart';
 import 'package:healthfooddelivery/model/recipe_model.dart';
 import 'package:healthfooddelivery/model/recipe.api.dart';
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
@@ -31,6 +32,7 @@ class _FoodInfoScreenState extends State<FoodInfoScreen> {
   }
 
   Widget build(BuildContext context) {
+    Cart cartItem = Cart(cost: 15, food:widget.recipes.name ,imageUrl:  widget.recipes.images,);
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -90,17 +92,7 @@ class _FoodInfoScreenState extends State<FoodInfoScreen> {
                 decoration: BoxDecoration(
                   color: greenColor,
                   borderRadius: BorderRadius.circular(15),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: greenColor.withOpacity(0.6),
-                  //     offset: Offset(
-                  //       0.0,
-                  //       10.0,
-                  //     ),
-                  //     blurRadius: 10.0,
-                  //     spreadRadius: -6.0,
-                  //   ),
-                  // ],
+                 
                   image: DecorationImage(
                     colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.35),
@@ -125,13 +117,13 @@ class _FoodInfoScreenState extends State<FoodInfoScreen> {
                 width: 70,
                 child: ClickButtons(
                     onpressed: () async {
-                      String output = await firestore.addToCart();
-                      if (output == "Success") {
+                       await firestore.addToCart(cart: cartItem);
+                      {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             width: 15,
                             behavior: SnackBarBehavior.floating,
                             backgroundColor: greenColor,
-                            content: Text("Added to Cart;;n",
+                            content: Text("Added to Cart;",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 16))));
                       }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthfooddelivery/Model/product_model.dart';
+
 import 'package:healthfooddelivery/widgets/color.dart';
 
 class CartItemWidget extends StatefulWidget {

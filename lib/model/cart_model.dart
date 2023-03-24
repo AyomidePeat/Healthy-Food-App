@@ -14,6 +14,9 @@ class Cart {
         cost: json["cost:"], food: json["food:"], imageUrl: json["imageUrl:"]);
   }
 
-  static Cart fromJson(Map<String, dynamic> json) => Cart(
-      cost: json["cost:"], food: json["food:"], imageUrl: json["imageUrl:"]);
+  
 }
+
+
+
+

@@ -9,7 +9,7 @@ class  UserDetailsProvider with ChangeNotifier{
   UserDetailsProvider() : userDetails= UserDetailsModel(name: "", );
 
   Future getData()async{
-    userDetails = await Firestore().getName();
+    userDetails = await Firestore().getUserName();
     notifyListeners();
   }
 }

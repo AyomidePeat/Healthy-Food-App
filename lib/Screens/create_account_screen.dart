@@ -165,66 +165,68 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Column(mainAxisAlignment:MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      LoadingButton(
-                     child: isLoading
-                      ? const Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: AspectRatio(
-                            aspectRatio: 1 / 1,
-                            child:
-                                CircularProgressIndicator(color: Colors.white),
-                          ),
-                        )
-                      : Text("Create an account"),
-                         
-                        onpressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          String output = await authHandler.signUp(
-                              name: nameController.text,
-                              email: emailController.text,
-                              password: passwordController.text);
-                         
-                          if (passwordController.text == confirmPasswordController.text) {
-                            if (output == "Success") {
-                            
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  backgroundColor: greenColor,
-                                  content: Text("Account created successfully",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 16))));
-                              Navigator.pushReplacement(
+                  Center(
+                    child: Column(mainAxisAlignment:MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        LoadingButton(
+                       child: isLoading
+                        ? const Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: AspectRatio(
+                              aspectRatio: 1 / 1,
+                              child:
+                                  CircularProgressIndicator(color: Colors.white),
+                            ),
+                          )
+                        : Text("Create an account"),
+                           
+                          onpressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            String output = await authHandler.signUp(
+                                name: nameController.text,
+                                email: emailController.text,
+                                password: passwordController.text);
+                           
+                            if (passwordController.text == confirmPasswordController.text) {
+                              if (output == "Success") {
+                              
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    backgroundColor: greenColor,
+                                    content: Text("Account created successfully",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 16))));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
+                              } else {
+                                  setState(() {
+                              isLoading = false;
+                            });
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    backgroundColor: greenColor,
+                                    content: Text(output,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 16))));
+                              }
+                            } 
+                          },
+                        ),
+
+                        const SizedBox(height: 10),
+                        TextButtons(
+                            onPressed: () {
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LoginScreen()));
-                            } else {
-                                setState(() {
-                            isLoading = false;
-                          });
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  backgroundColor: greenColor,
-                                  content: Text(output,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 16))));
-                            }
-                          } 
-                        },
-                      ),
-
-                      const SizedBox(height: 10),
-                      TextButtons(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginScreen()));
-                          },
-                          text: "Login to my account"),
-                    ],
+                            },
+                            text: "Login to my account"),
+                      ],
+                    ),
                   ),
                               ],
                             ),

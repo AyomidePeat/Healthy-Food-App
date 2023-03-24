@@ -1,15 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:healthfooddelivery/model/cart_model.dart';
 import 'package:healthfooddelivery/widgets/color.dart';
-import 'package:healthfooddelivery/Screens/delivery_method_screen.dart';
-import 'package:healthfooddelivery/Screens/navigaton_screen.dart';
-import 'package:healthfooddelivery/model/product_model.dart';
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
-import 'package:healthfooddelivery/widgets/buttons.dart';
 import 'package:healthfooddelivery/widgets/cart_item_widget.dart';
-import 'package:healthfooddelivery/widgets/navigation_pane.dart';
 
 class CartScreen extends StatefulWidget {
   // const CartScreen({.key});
@@ -25,6 +18,12 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
@@ -35,28 +34,48 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ),
       ),
-      body: Center(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Text("Your Cart",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            )),
-        const SizedBox(height: 18),
-        StreamBuilder(
-            stream: firebaseFirestore.getCartItem(),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Center(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text("Your Cart",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              )),
+          const SizedBox(height: 18),
+          FutureBuilder(
+            future: firebaseFirestore.getCartItems(),
             builder: (context, snapshots) {
               if (snapshots.hasData) {
                 final cart = snapshots.data;
-                return ListView(children: cart.map(buildCart).toList());
+                return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: cart.length,
+                    itemBuilder: (context, index) {
+                      //  Cart _cart = cart[index];
+
+                      return ListTile(
+                        title: CartItemWidget(
+                          title: cart[index].name,
+                          thumbnailUrl: cart[index].image,
+                        ),
+                        onTap: () {},
+                      );
+                    });
               } else {
+                String error = snapshots.error;
+                print(error);
                 return Center(
-                    child: CircularProgressIndicator(color: greenColor));
+                  child: CircularProgressIndicator(color: greenColor),
+                );
               }
-            })
-      ])),
+            },
+          ),
+        ])),
+      ),
     );
   }
 

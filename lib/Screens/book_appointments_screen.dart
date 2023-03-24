@@ -322,7 +322,9 @@ class _BookAppointmentsScreenState extends State<BookAppointmentsScreen> {
                       fontSize: 18)),
             ],
           )),
-      body: Padding(
+      body: SingleChildScrollView(
+        
+        child:Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
@@ -467,7 +469,7 @@ class _BookAppointmentsScreenState extends State<BookAppointmentsScreen> {
                 text: "Book Appointment")
           ],
         ),
-      ),
+      )),
     );
   }
 }

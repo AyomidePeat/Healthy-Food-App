@@ -16,8 +16,5 @@ class UserDetailsModel {
     );
   }
 
-  static UserDetailsModel fromJson(Map<String, dynamic> json) =>
-      UserDetailsModel(
-        name: json['name'],
-      );
+ 
 }
