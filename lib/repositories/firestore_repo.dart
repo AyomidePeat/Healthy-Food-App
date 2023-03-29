@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthfooddelivery/model/cart_model.dart';
 
@@ -14,8 +16,6 @@ class Firestore {
         .doc(firebaseAuth.currentUser.uid)
         .set(user.toJson());
   }
-
- 
 
   Future<UserDetailsModel> getUserName() async {
     DocumentSnapshot snapshot = await firebaseFirestore
@@ -41,27 +41,30 @@ class Firestore {
         .set(cart.toJson());
   }
 
-  Future getCartItems() async {
-    QuerySnapshot<Map<String, dynamic>> snapshot = await firebaseFirestore
+  // Future<Cart> getCartItems() async {
+  //   QuerySnapshot<Map<String, dynamic>> snapshot = await firebaseFirestore
+  //       .collection("users")
+  //       .doc(firebaseAuth.currentUser.uid)
+  //       .collection("cart")
+  //       .get();
+  //   print('Snapshot: $snapshot');
+
+  //   List<String> jsonList =
+  //       snapshot.docs.map((doc) => jsonEncode(doc.data())).toList();
+  //   print('JSON List: $jsonList');
+
+  //   return Cart.getModelFromJson(jsonList: jsonList);
+  // }
+
+  Future<List<Cart>> getCartItems() async {
+    firebaseFirestore
         .collection("users")
         .doc(firebaseAuth.currentUser.uid)
         .collection("cart")
-        .get();
-        
-     Cart cart =Cart.getModelFromJson(
-        json: snapshot.docs as dynamic,
-      );
-      return cart;
-    }
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Cart.getModelFromJson(doc.data())).toList());
   }
-
-  // Stream<List<Cart>> getCartItem() => firebaseFirestore
-  //     .collection("users")
-  //     .doc(firebaseAuth.currentUser.uid)
-  //     .collection("cart")
-  //     .snapshots()
-  //     .map((snapshot) =>
-  //         snapshot.docs.map((doc) => Cart.fromJson(doc.data())).toList());
 
   Future deleteProductFromCart({String uid}) async {
     await firebaseFirestore
@@ -85,6 +88,7 @@ class Firestore {
     });
     return result;
   }
+
   List listenToCartChanges() {
     List result = [];
     firebaseFirestore
@@ -99,3 +103,4 @@ class Firestore {
     });
     return result;
   }
+}

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:healthfooddelivery/widgets/color.dart';
 
 class CartItemWidget extends StatefulWidget {
- // final ProductModel product;
+  // final ProductModel product;
   final String thumbnailUrl;
   final String title;
-  const CartItemWidget({key,  this.thumbnailUrl, this.title});
+  final int cost;
+  const CartItemWidget({key, this.thumbnailUrl, this.title, this.cost});
 
   @override
   State<CartItemWidget> createState() => _CartItemWidgetState();
@@ -46,8 +47,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   color: Colors.black,
                   fontSize: 10,
                 )),
-            const Text("\$15",
-                style: TextStyle(
+          Text(widget.cost.toString(),
+                style: const TextStyle(
                   color: greenColor,
                   fontSize: 13,
                 )),

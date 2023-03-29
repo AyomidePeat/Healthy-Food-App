@@ -15,6 +15,7 @@ class _CartScreenState extends State<CartScreen> {
   Firestore firebaseFirestore = Firestore();
   @override
   Widget build(BuildContext context) {
+    List<Cart> cartItems;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -46,27 +47,32 @@ class _CartScreenState extends State<CartScreen> {
                 fontSize: 18,
               )),
           const SizedBox(height: 18),
-          FutureBuilder(
+          FutureBuilder<List<Cart>>(
             future: firebaseFirestore.getCartItems(),
-            builder: (context, snapshots) {
-              if (snapshots.hasData) {
-                final cart = snapshots.data;
-                return ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: cart.length,
-                    itemBuilder: (context, index) {
-                      //  Cart _cart = cart[index];
+            builder: (BuildContext context, AsyncSnapshot<List<Cart>> snapshot) {
+              if (snapshot.hasData) {
+                final cart = snapshot.data;
+                // cartItems = cart;
+                return Text(cart.toString());
+                // ListView.builder(
+                //     physics: BouncingScrollPhysics(),
+                //     itemCount: 1,
+                //     itemBuilder: (context, index) {
+                //       //  Cart _cart = cart[index];
 
-                      return ListTile(
-                        title: CartItemWidget(
-                          title: cart[index].name,
-                          thumbnailUrl: cart[index].image,
-                        ),
-                        onTap: () {},
-                      );
-                    });
+                //       return ListTile(
+                //         title:
+                //         CartItemWidget(
+                //           title: cart.food,
+                //           thumbnailUrl: cart.imageUrl,
+                //           cost: cart.cost,
+
+                //         ),
+                //         onTap: () {},
+                //       );
+                //     });
               } else {
-                String error = snapshots.error;
+                String error = snapshot.error;
                 print(error);
                 return Center(
                   child: CircularProgressIndicator(color: greenColor),

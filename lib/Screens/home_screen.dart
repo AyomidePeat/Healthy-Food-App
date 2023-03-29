@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(color: Colors.black),
                       );
                     } else {
-                      return const Text('Username not Registered',
+                      return const Text('Hello',
                           style: TextStyle(color: Colors.black));
                     }
                   }

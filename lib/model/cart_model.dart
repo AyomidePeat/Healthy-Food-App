@@ -2,21 +2,19 @@ class Cart {
   int cost;
   final String food;
   final String imageUrl;
+
   Cart({this.cost, this.food, this.imageUrl});
+
   Map<String, dynamic> toJson() => {
         'cost': cost,
         'food': food,
         'imageUrl': imageUrl,
       };
 
-  factory Cart.getModelFromJson({Map<String, dynamic> json}) {
+  factory Cart.getModelFromJson(Map<String, dynamic> data, 
+      {Map<String, dynamic> json, List<String> jsonList}) {
+    print('JSON List: $jsonList');
     return Cart(
         cost: json["cost:"], food: json["food:"], imageUrl: json["imageUrl:"]);
   }
-
-  
 }
-
-
-
-

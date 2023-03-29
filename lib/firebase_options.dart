@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBnQD_lPgAlF_a4ap16PW_7JQpBuRy0JVY',
-    appId: '1:785142456691:web:a4b5f9b15ef74e0e7de506',
-    messagingSenderId: '785142456691',
-    projectId: 'simplelogin-app',
-    authDomain: 'simplelogin-app.firebaseapp.com',
-    storageBucket: 'simplelogin-app.appspot.com',
-    measurementId: 'G-29FCLC7LTQ',
+    apiKey: 'AIzaSyACBSHI59gcTfCX6agyoR1xOeCKj9Ql4rY',
+    appId: '1:1008479134217:web:44f6ce11fe6aea81eb8ed8',
+    messagingSenderId: '1008479134217',
+    projectId: 'healthyfood-fe90c',
+    authDomain: 'healthyfood-fe90c.firebaseapp.com',
+    storageBucket: 'healthyfood-fe90c.appspot.com',
+    measurementId: 'G-CF7XMPKZVT',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDG6vmhWHlRQBuBtJbxJu4iD7qCtRupWrI',
-    appId: '1:785142456691:android:bcc3d77028c7827e7de506',
-    messagingSenderId: '785142456691',
-    projectId: 'simplelogin-app',
-    storageBucket: 'simplelogin-app.appspot.com',
+    apiKey: 'AIzaSyA5nQcI4ZwNJ7jDOb9ma7GLyCI8ZJRA6Bo',
+    appId: '1:1008479134217:android:5bb3ff01aaa82f3aeb8ed8',
+    messagingSenderId: '1008479134217',
+    projectId: 'healthyfood-fe90c',
+    storageBucket: 'healthyfood-fe90c.appspot.com',
   );
 }

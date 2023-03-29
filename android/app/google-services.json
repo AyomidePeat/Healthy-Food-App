@@ -1,113 +1,34 @@
 {
   "project_info": {
-    "project_number": "785142456691",
-    "project_id": "simplelogin-app",
-    "storage_bucket": "simplelogin-app.appspot.com"
+    "project_number": "1008479134217",
+    "project_id": "healthyfood-fe90c",
+    "storage_bucket": "healthyfood-fe90c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:785142456691:android:bcc3d77028c7827e7de506",
+        "mobilesdk_app_id": "1:1008479134217:android:5bb3ff01aaa82f3aeb8ed8",
         "android_client_info": {
           "package_name": "com.example.first_project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "785142456691-o2mglvn6o107ocj2g4jp23p72s0jt2q3.apps.googleusercontent.com",
+          "client_id": "1008479134217-b4oq423dogjf3i16glom9ua9boghafju.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDG6vmhWHlRQBuBtJbxJu4iD7qCtRupWrI"
+          "current_key": "AIzaSyA5nQcI4ZwNJ7jDOb9ma7GLyCI8ZJRA6Bo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "785142456691-o2mglvn6o107ocj2g4jp23p72s0jt2q3.apps.googleusercontent.com",
+              "client_id": "1008479134217-b4oq423dogjf3i16glom9ua9boghafju.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "785142456691-uo0udb77c6olfalqifk3nbm29f24q7r2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.simpleLoginApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:785142456691:android:2754be1f219a76337de506",
-        "android_client_info": {
-          "package_name": "com.example.simple_login_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "785142456691-o2mglvn6o107ocj2g4jp23p72s0jt2q3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDG6vmhWHlRQBuBtJbxJu4iD7qCtRupWrI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "785142456691-o2mglvn6o107ocj2g4jp23p72s0jt2q3.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "785142456691-uo0udb77c6olfalqifk3nbm29f24q7r2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.simpleLoginApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:785142456691:android:3f2d84ab5f4970ef7de506",
-        "android_client_info": {
-          "package_name": "com.example.simplelogin"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "785142456691-o2mglvn6o107ocj2g4jp23p72s0jt2q3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDG6vmhWHlRQBuBtJbxJu4iD7qCtRupWrI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "785142456691-o2mglvn6o107ocj2g4jp23p72s0jt2q3.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "785142456691-uo0udb77c6olfalqifk3nbm29f24q7r2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.simpleLoginApp"
-              }
             }
           ]
         }
