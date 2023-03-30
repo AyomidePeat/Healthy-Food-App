@@ -22,68 +22,102 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   }
 
   void decrementer() {
-    setState(() {
+    setState(() { if (counter > 0)
       counter--;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: 7,
-          width: 7,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(widget.thumbnailUrl),
+    final size = MediaQuery.of(context).size;
+    final double buttonSize = 20;
+    return SizedBox(
+      height: 100,
+      width: size.width * 0.8,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            height: 70,
+            width: 70,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              image: DecorationImage(
+                image: NetworkImage(widget.thumbnailUrl),
+              ),
             ),
           ),
-        ),
-        Column(
-          children: [
-            Text(widget.title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 10,
-                )),
-          Text(widget.cost.toString(),
-                style: const TextStyle(
-                  color: greenColor,
-                  fontSize: 13,
-                )),
-          ],
-        ),
-        SizedBox(
-          width: 5,
-          height: 5,
-          child: FloatingActionButton(
-            onPressed: decrementer,
-            backgroundColor: greenColor,
-            child: const Icon(Icons.remove, color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0, right: 8, left : 8,),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width: 180, 
+                  child: Text(widget.title, overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
+                      )),
+                ),
+                Text('\$ ${widget.cost.toString()}',
+                    style: const TextStyle(fontWeight: FontWeight.w700,
+                      color: greenColor,
+                      fontSize: 13,
+                    )),
+              ],
+            ),
           ),
-        ),
-        AnimatedSwitcher(
-          key: ValueKey(counter),
-          child: Text('$counter',
-              style: const TextStyle(color: Colors.black, fontSize: 11)),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(
-              scale: animation,
-              child: child,
-            );
-          },
-        ),
-        SizedBox(
-          width: 5,
-          height: 5,
-          child: FloatingActionButton(
-            onPressed: incrementer,
-            backgroundColor: greenColor,
-            child: const Icon(Icons.add, color: Colors.white),
+          Padding(
+            padding:  const EdgeInsets.only(top: 23.0),
+            child: SizedBox(
+              width: buttonSize,
+              height: buttonSize,
+              child: FloatingActionButton(
+                onPressed: decrementer,
+                backgroundColor: greenColor,
+                child: const Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                  size: 13,
+                ),
+              ),
+            ),
           ),
-        ),
-      ],
+          Padding(
+            padding:  const EdgeInsets.only(top: 27.0),
+            child: AnimatedSwitcher(
+              key: ValueKey(counter),
+              child: Text('$counter',
+                  style: const TextStyle(color: Colors.black, fontSize: 11, fontWeight:  FontWeight.bold, )),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                
+                return ScaleTransition(
+                  scale: animation,
+                  child: child,
+                );
+              },
+              duration: Duration(milliseconds: 5000),
+            ),
+          ),
+          Padding(
+            padding:  const EdgeInsets.only(top: 23.0),
+            child: SizedBox(
+              width: buttonSize,
+              height: buttonSize,
+              child: FloatingActionButton(
+                onPressed: incrementer,
+                backgroundColor: greenColor,
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 13,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

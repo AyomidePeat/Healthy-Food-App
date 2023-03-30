@@ -32,39 +32,49 @@ class Firestore {
     }
   }
 
+  Future uploadAddressToDatabase({UserDetailsModel address}) async {
+    await firebaseFirestore
+        .collection("users")
+        .doc(firebaseAuth.currentUser.uid)
+        .set(address.toJson());
+  }
+
+  Future<UserDetailsModel> getAddress() async {
+    DocumentSnapshot snapshot = await firebaseFirestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser.uid)
+        .get();
+    if (snapshot.exists) {
+      UserDetailsModel user = UserDetailsModel.getModelFromJson(
+        json: snapshot.data() as dynamic,
+      );
+      return user;
+    } else {
+      return null;
+    }
+  }
+
   Future addToCart({Cart cart}) async {
     await firebaseFirestore
         .collection('users')
         .doc(firebaseAuth.currentUser.uid)
         .collection("cart-items")
-        .doc(firebaseAuth.currentUser.uid)
+        .doc()
         .set(cart.toJson());
   }
+Stream<List<Cart>> getCartItems() {
+  return firebaseFirestore
+      .collection("users")
+      .doc(firebaseAuth.currentUser.uid)
+      .collection("cart-items")
+      .snapshots()
+      .map((querySnapshot) {
+    return querySnapshot.docs
+        .map((doc) => Cart.getModelFromJson(doc.data()))
+        .toList();
+  });
+}
 
-  // Future<Cart> getCartItems() async {
-  //   QuerySnapshot<Map<String, dynamic>> snapshot = await firebaseFirestore
-  //       .collection("users")
-  //       .doc(firebaseAuth.currentUser.uid)
-  //       .collection("cart")
-  //       .get();
-  //   print('Snapshot: $snapshot');
-
-  //   List<String> jsonList =
-  //       snapshot.docs.map((doc) => jsonEncode(doc.data())).toList();
-  //   print('JSON List: $jsonList');
-
-  //   return Cart.getModelFromJson(jsonList: jsonList);
-  // }
-
-  Future<List<Cart>> getCartItems() async {
-    firebaseFirestore
-        .collection("users")
-        .doc(firebaseAuth.currentUser.uid)
-        .collection("cart")
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => Cart.getModelFromJson(doc.data())).toList());
-  }
 
   Future deleteProductFromCart({String uid}) async {
     await firebaseFirestore

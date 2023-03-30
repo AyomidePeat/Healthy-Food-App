@@ -1,9 +1,11 @@
 class UserDetailsModel {
   final String name;
+  final String address;
   // String id;
 
-  UserDetailsModel({
+  UserDetailsModel( {
     this.name,
+    this.address,
     //  this.id,
   });
 
@@ -11,10 +13,8 @@ class UserDetailsModel {
 
   factory UserDetailsModel.getModelFromJson({Map<String, dynamic> json}) {
     return UserDetailsModel(
-      name: json['name'],
-      //  id: json['id'],
-    );
+      name: json['name'], 
+      address: json['address']
+ );
   }
-
- 
 }

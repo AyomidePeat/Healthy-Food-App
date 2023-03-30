@@ -11,10 +11,10 @@ class Cart {
         'imageUrl': imageUrl,
       };
 
-  factory Cart.getModelFromJson(Map<String, dynamic> data, 
-      {Map<String, dynamic> json, List<String> jsonList}) {
-    print('JSON List: $jsonList');
+  factory Cart.getModelFromJson(Map<String, dynamic> data) {
     return Cart(
-        cost: json["cost:"], food: json["food:"], imageUrl: json["imageUrl:"]);
+        cost: data["cost"],
+        food: data["food"],
+        imageUrl: data["imageUrl"]);
   }
 }

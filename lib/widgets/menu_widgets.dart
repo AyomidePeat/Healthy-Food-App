@@ -5,6 +5,6 @@ class MenuWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context)=> IconButton(
     icon:Icon(Icons.menu),
-    onPressed: ()=> ZoomDrawer.of(context).toggle?.call(),
+    onPressed: ()=> ZoomDrawer.of(context).toggle(),
   );
 }

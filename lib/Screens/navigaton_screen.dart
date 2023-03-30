@@ -50,7 +50,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Drawer( child: ZoomDrawer(
           borderRadius: 40,
           angle: -10,
-          style: DrawerStyle.defaultStyle,
+          style: DrawerStyle.style4,
           slideWidth: MediaQuery.of(context).size.width * 0.8,
           // slideHeight: MediaQuery.of(context).size.width * 0.8,
           showShadow: true,
