@@ -17,6 +17,7 @@ class MenuItems {
   static const shareTransformation = MenuStuff('Share Transformation', Icons.add_a_photo);
   static const settings = MenuStuff('Settings', Icons.settings);
   static const connect = MenuStuff('Connect', Icons.cast_connected_outlined);
+  static const cart = MenuStuff('Cart', Icons.shopping_cart_outlined);
 
   static const all = <MenuStuff>[
     home,
@@ -27,6 +28,7 @@ class MenuItems {
     shareTransformation,
     settings,
     connect,
+    cart,
   ];
 }
 

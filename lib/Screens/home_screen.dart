@@ -118,10 +118,10 @@ class FoodWidget extends StatelessWidget {
     Key key,
     @required List<Recipe> recipes,
     @required this.topContainer,
-  })  : _recipes = recipes,
+  })  : recipees = recipes,
         super(key: key);
 
-  final List<Recipe> _recipes;
+  final List<Recipe> recipees;
   final double topContainer;
 
   @override
@@ -133,25 +133,25 @@ class FoodWidget extends StatelessWidget {
         fit: FlexFit.tight,
         child: ListView.builder(
             physics: BouncingScrollPhysics(),
-            itemCount: _recipes.length,
+            itemCount: recipees.length,
             itemBuilder: (context, index) {
-              Recipe recipe = _recipes[index];
+              Recipe recipe = recipees[index];
 
               return Hero(
-                tag: _recipes[index],
+                tag: recipees[index],
                 child: ListTile(
                   title: RecipeCard(
-                    title: _recipes[index].name,
-                    cookTime: _recipes[index].totalTime,
-                    rating: _recipes[index].rating.toString(),
-                    thumbnailUrl: _recipes[index].images,
+                    title: recipees[index].name,
+                    cookTime: recipees[index].totalTime,
+                    rating: recipees[index].rating.toString(),
+                    thumbnailUrl: recipees[index].images,
                   ),
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => FoodInfoScreen(
-                                  recipes: recipe,
+                                  recipes: recipe, recipeTag: recipees,
                                 )));
                   },
                 ),
