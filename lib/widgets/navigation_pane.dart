@@ -43,7 +43,7 @@ class NavigationPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Theme(
    
-        data: ThemeData.dark(),
+        data: ThemeData.light(),
         child: Scaffold(
            // backgroundColor: Colors.indigo,
             body: SafeArea(

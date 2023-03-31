@@ -1,9 +1,9 @@
 class SearchResult {
   final String name;
- //
- // final String images;
+ 
+  final String imageUrl;
   
-  SearchResult({this.name,  });
+  SearchResult({this.name, this.imageUrl  });
 //this.images,
   factory SearchResult.fromJson(dynamic json) {
     return SearchResult(

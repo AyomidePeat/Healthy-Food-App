@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
           
                           if (output == "Success") {
                             UserDetailsModel userdetails =
-                                await firebaseFirestore.getUserName();
+                                await firebaseFirestore.getUserNameAndAddress();
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(

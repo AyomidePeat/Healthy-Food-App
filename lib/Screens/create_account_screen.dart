@@ -23,6 +23,7 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   AuthenticationMethods authHandler = AuthenticationMethods();
   Firestore nameHandler = Firestore();
 
@@ -32,9 +33,9 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
     passwordController.dispose;
     emailController.dispose;
     nameController.dispose;
+    addressController.dispose();
     super.dispose();
   }
-    
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +45,10 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
             padding: EdgeInsets.all(15),
             child: Center(
                 child: SingleChildScrollView(
-                  child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -59,7 +60,7 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                   ),
                   const SizedBox(height: 15),
                   Padding(
-                    padding:  const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: const Text(
                       "Create an account",
                       style: TextStyle(
@@ -71,18 +72,18 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                   ),
                   const SizedBox(height: 10),
                   Padding(
-                    padding:  const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: const Text(
                       "Welcome friend, enter your details so let's get\nstarted with ordering food",
                       //textAlign:TextAlign.center,
-                      style:
-                          TextStyle(color: Colors.black, fontFamily: "montserrat"),
+                      style: TextStyle(
+                          color: Colors.black, fontFamily: "montserrat"),
                     ),
                   ),
                   const SizedBox(height: 20),
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     Padding(
-                      padding:  const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(left: 10),
                       child: const Text(
                         "Name",
                         style: TextStyle(
@@ -113,6 +114,8 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                     ),
                   ]),
                   const SizedBox(height: 7),
+              
+                  const SizedBox(height: 7),
                   SingleChildScrollView(
                     child: TextFieldWidget(
                         controller: emailController,
@@ -120,9 +123,28 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                         hint: 'Enter email'),
                   ),
                   const SizedBox(height: 10),
+                      Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: const Text(
+                        "Address",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Montserrat",
+                            fontSize: 10),
+                      ),
+                    ),
+                  ]),
+                  const SizedBox(height: 7),
+                  SingleChildScrollView(
+                    child: TextFieldWidget(
+                        controller: addressController,
+                        obscure: false,
+                        hint: 'Tell us your home address'),
+                  ),
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     Padding(
-                      padding:  const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(left: 10),
                       child: const Text(
                         "Password",
                         style: TextStyle(
@@ -166,56 +188,60 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                   ),
                   const SizedBox(height: 10),
                   Center(
-                    child: Column(mainAxisAlignment:MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         LoadingButton(
-                       child: isLoading
-                        ? const Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: AspectRatio(
-                              aspectRatio: 1 / 1,
-                              child:
-                                  CircularProgressIndicator(color: Colors.white),
-                            ),
-                          )
-                        : Text("Create an account"),
-                           
+                          child: isLoading
+                              ? const Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: AspectRatio(
+                                    aspectRatio: 1 / 1,
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white),
+                                  ),
+                                )
+                              : Text("Create an account"),
                           onpressed: () async {
                             setState(() {
                               isLoading = true;
                             });
                             String output = await authHandler.signUp(
                                 name: nameController.text,
+                                address: addressController.text,
                                 email: emailController.text,
                                 password: passwordController.text);
-                           
-                            if (passwordController.text == confirmPasswordController.text) {
+
+                            if (passwordController.text ==
+                                confirmPasswordController.text) {
                               if (output == "Success") {
-                              
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    backgroundColor: greenColor,
-                                    content: Text("Account created successfully",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 16))));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor: greenColor,
+                                        content: Text(
+                                            "Account created successfully",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 16))));
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => HomeScreen()));
                               } else {
-                                  setState(() {
-                              isLoading = false;
-                            });
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    backgroundColor: greenColor,
-                                    content: Text(output,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 16))));
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor: greenColor,
+                                        content: Text(output,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 16))));
                               }
-                            } 
+                            }
                           },
                         ),
-
                         const SizedBox(height: 10),
                         TextButtons(
                             onPressed: () {
@@ -228,8 +254,8 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                       ],
                     ),
                   ),
-                              ],
-                            ),
-                ))));
+                ],
+              ),
+            ))));
   }
 }

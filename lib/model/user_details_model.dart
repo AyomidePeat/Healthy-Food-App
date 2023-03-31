@@ -9,7 +9,7 @@ class UserDetailsModel {
     //  this.id,
   });
 
-  Map<String, dynamic> toJson() => {'name': name};
+  Map<String, dynamic> toJson() => {'name': name, 'address':address};
 
   factory UserDetailsModel.getModelFromJson({Map<String, dynamic> json}) {
     return UserDetailsModel(

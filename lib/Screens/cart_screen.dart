@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:healthfooddelivery/Screens/navigaton_screen.dart';
 import 'package:healthfooddelivery/model/cart_model.dart';
 import 'package:healthfooddelivery/model/user_details_model.dart';
 import 'package:healthfooddelivery/widgets/color.dart';
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
 import 'package:healthfooddelivery/widgets/cart_item_widget.dart';
 import 'package:healthfooddelivery/widgets/textfield.dart';
+import 'package:healthfooddelivery/widgets/underlined_textbutton.dart';
 
 class CartScreen extends StatefulWidget {
   // const CartScreen({.key});
@@ -14,6 +16,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+
   Firestore firebaseFirestore = Firestore();
   TextEditingController addressController = TextEditingController();
   bool isSubmitted = false;
@@ -23,15 +26,9 @@ class _CartScreenState extends State<CartScreen> {
     super.dispose();
   }
 
-  getAddress() {
-    String address;
-    setState(() {
-      String address = addressController.text;
-    });
-    return address;
-  }
-
+  
   Widget build(BuildContext context) {
+    
     List<Cart> cartItems;
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +37,9 @@ class _CartScreenState extends State<CartScreen> {
         automaticallyImplyLeading: false,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+               Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>NavigationScreen()));
+                
             },
             icon: Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.transparent,
@@ -65,7 +64,7 @@ class _CartScreenState extends State<CartScreen> {
                             width: 200,
                             child: TextFieldWidget(
                               controller: addressController,
-                              hint: "Tell us your address",
+                              hint: "Tell us your new address",
                               obscure: false,
                             ),
                           ),
@@ -77,7 +76,7 @@ class _CartScreenState extends State<CartScreen> {
                                         UserDetailsModel(
                                             address: addressController.text);
                                     await firebaseFirestore
-                                        .uploadAddressToDatabase(
+                                        .updateAddress(
                                             address: userAddress);
                                     {
                                       ScaffoldMessenger.of(context)
@@ -102,20 +101,25 @@ class _CartScreenState extends State<CartScreen> {
               ),
             );
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              const Text(
-                "Delivery to",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: "Montserrat",
-                    fontSize: 14),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  const Text(
+                    "Delivery to",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Montserrat",
+                        fontSize: 14),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Icon(Icons.keyboard_arrow_down_outlined, size: 15),
+                  )
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Icon(Icons.keyboard_arrow_down_outlined, size: 15),
-              )
+              UnderlinedTextButton(text: getAddress().toString() ,)
             ],
           ),
         ),
@@ -172,9 +176,16 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget buildCart(Cart cart) => ListTile(
-        leading: Container(child: Image.network("${cart.imageUrl}")),
-        title: Text(cart.food),
-        subtitle: Text(cart.cost.toString()),
-      );
-}
+ Widget getAddress() {
+   Firestore firebaseFirestore = Firestore();
+     FutureBuilder<UserDetailsModel>(
+                    future: firebaseFirestore.getUserNameAndAddress(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<UserDetailsModel> snapshot) 
+                      {
+                        if (snapshot.hasData) {
+                          return Text('${snapshot.data.address}'); }
+                          },
+                          );}
+                          }
+  

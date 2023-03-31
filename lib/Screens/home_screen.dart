@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:healthfooddelivery/Screens/search_results_screen.dart';
-import 'package:healthfooddelivery/model/cart_model.dart';
-import 'package:healthfooddelivery/providers/user_details_provider.dart';
+import 'package:healthfooddelivery/model/recipe.api.dart';
+
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
-//import 'package:healthfooddelivery/Screens/navigaton_screen.dart';
+
 import 'package:healthfooddelivery/Screens/food_info_screen.dart';
 
 import 'package:healthfooddelivery/model/recipe_model.dart';
-import 'package:healthfooddelivery/model/recipe.api.dart';
+
 import 'package:healthfooddelivery/model/user_details_model.dart';
 import 'package:healthfooddelivery/widgets/color.dart';
 import 'package:healthfooddelivery/widgets/menu_widgets.dart';
@@ -16,46 +16,48 @@ import 'package:healthfooddelivery/widgets/recipe_card.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  // final UserDetailsModel user;
-  // HomeScreen({@required this.user});
-  // final ProductModel productModel;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  String query;
-  List<Recipe> _recipes;
-  bool _isLoading = true;
-  ScrollController controller = ScrollController();
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
 
-  bool closeTopContainer = false;
-  double topContainer = 0;
+  List<Recipe> _breakfastList;
+  List<Recipe> _lunchList;
+  List<Recipe> _dinnerList;
+  List<Recipe> _snacksList;
+  List<Recipe> _mealtimeList;
+  RecipeApi recipeApi = RecipeApi();
 
   @override
   void initState() {
     super.initState();
 
-    getRecipes();
+    _tabController = TabController(length: 5, vsync: this);
 
-    controller.addListener(() {
-      double value = controller.offset / 200;
-
-      setState(() {
-        topContainer = value;
-        closeTopContainer = controller.offset > 50;
-      });
-    });
+    _loadFoodResults();
   }
+
+  Future<void> _loadFoodResults() async {
+    try {
+      _breakfastList = await recipeApi.getFoodResults('breakfast');
+      _lunchList = await recipeApi.getFoodResults('lunch');
+      _dinnerList = await recipeApi.getFoodResults('dinner');
+      _snacksList = await recipeApi.getFoodResults('snacks');
+      _mealtimeList = await recipeApi.getFoodResults('mealtime');
+
+      setState(() {});
+    } catch (e) {
+      print('Failed to load food results: $e');
+    }
+  }
+
+  String query;
 
   Firestore firestore = Firestore();
   TextEditingController searchController = TextEditingController();
-  Future<void> getRecipes() async {
-    _recipes = await RecipeApi.getRecipe();
-    setState(() {
-      _isLoading = false;
-    });
-  }
 
   @override
   void dispose() {
@@ -69,96 +71,196 @@ class _HomeScreenState extends State<HomeScreen> {
   ) {
     return Scaffold(
         appBar: AppBar(
-            actions: <Widget>[
-              MenuWidget(),
-            ],
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             centerTitle: true,
             automaticallyImplyLeading: false,
-            title: Row(children: [
-              const Icon(Icons.restaurant_menu, color: greenColor),
-              const SizedBox(width: 10),
-              FutureBuilder<UserDetailsModel>(
-                future: firestore.getUserName(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<UserDetailsModel> snapshot) {
-                   {
-                    if (snapshot.hasData) {
-                      return Text(
-                        'Hello ${snapshot.data.name}!',
-                        style: TextStyle(color: Colors.black),
-                      );
-                    } else {
-                      return const Text('Hello',
-                          style: TextStyle(color: Colors.black));
-                    }
-                  }
-                },
-              ),
-            ]),
+            title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MenuWidget(),
+                  FutureBuilder<UserDetailsModel>(
+                    future: firestore.getUserNameAndAddress(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<UserDetailsModel> snapshot) {
+                      {
+                        if (snapshot.hasData) {
+                          return Column(
+                            children: [
+                              Text(
+                                'Location',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontFamily: 'montserrat',
+                                    fontSize: 10),
+                              ),
+                              Text(
+                                '${snapshot.data.address}',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return const Text('',
+                              style: TextStyle(color: Colors.black));
+                        }
+                      }
+                    },
+                  ),
+                  const Icon(Icons.notifications_outlined, color: Colors.black),
+                ]),
             iconTheme: IconThemeData(color: Colors.black)),
         body: Padding(
             padding: EdgeInsets.all(15),
-            child: Column(
-              children: [
-                SearchField(searchController: searchController),
-                SizedBox(height: 15),
-                _isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(color: greenColor))
-                    : FoodWidget(recipes: _recipes, topContainer: topContainer),
-              ],
-            )));
-  }
-}
-
-class FoodWidget extends StatelessWidget {
-  const FoodWidget({
-    Key key,
-    @required List<Recipe> recipes,
-    @required this.topContainer,
-  })  : recipees = recipes,
-        super(key: key);
-
-  final List<Recipe> recipees;
-  final double topContainer;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Flexible(
-        // flex: 5,
-
-        fit: FlexFit.tight,
-        child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemCount: recipees.length,
-            itemBuilder: (context, index) {
-              Recipe recipe = recipees[index];
-
-              return Hero(
-                tag: recipees[index],
-                child: ListTile(
-                  title: RecipeCard(
-                    title: recipees[index].name,
-                    cookTime: recipees[index].totalTime,
-                    rating: recipees[index].rating.toString(),
-                    thumbnailUrl: recipees[index].images,
+            child: Column(children: [
+              Container(
+                  height: 150,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: greenColor,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FoodInfoScreen(
-                                  recipes: recipe, recipeTag: recipees,
-                                )));
-                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              FutureBuilder<UserDetailsModel>(
+                                  future: firestore.getUserNameAndAddress(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<UserDetailsModel>
+                                          snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        'Hi ${snapshot.data.name} !',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    } else {
+                                      return const Text('',
+                                          style:
+                                              TextStyle(color: Colors.black));
+                                    }
+                                  }),
+                              Icon(Icons.notifications_active_sharp,
+                                  color: Colors.yellow)
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 300,
+                            child: Text(
+                              'As a new user you have access to 20 discount tickects and a free apointment with the nutritionist via audio or video call. \nStart Exploring!',
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.white,
+                                //  fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ]),
+                  )),
+              const SizedBox(height: 20),
+              SearchField(searchController: searchController),
+              const SizedBox(height: 25),
+              TabBar(
+                isScrollable: true,
+                unselectedLabelColor: Colors.grey,
+                controller: _tabController,
+                indicator: BoxDecoration(
+                    color: greenColor, borderRadius: BorderRadius.circular(10)),
+                tabs: [
+                  Tab(
+                    child: Container(
+                      width: 100,
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Text('Breakfast')),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                       border: Border.all(color: Colors.grey, width: 0.4),
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Container(
+                      width: 100,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('Lunch',
+                            ),
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey, width: 0.4)),
+                    ),
+                  ),
+                  Tab(
+                    child: Container(
+                      width: 100,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('Dinner'),
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey, width: 0.4)),
+                    ),
+                  ),
+                  Tab(
+                    child: Container(
+                      width: 100,
+                      // ignore: sort_child_properties_last
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text('Snacks'),
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey, width: 0.4)),
+                    ),
+                  ),
+                  Tab(
+                    child: Container(
+                      width: 100,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('Mealtime'),
+                      ),
+                      decoration: BoxDecoration(
+                          color: _tabController.index == 4
+                              ? greenColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey, width: 0.4)),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 25),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildFoodList(_breakfastList),
+                    _buildFoodList(_lunchList),
+                    _buildFoodList(_dinnerList),
+                    _buildFoodList(_snacksList),
+                    _buildFoodList(_mealtimeList),
+                  ],
                 ),
-              );
-            }),
-      ),
-    );
+              ),
+            ])));
   }
 }
 
@@ -178,19 +280,6 @@ class _SearchFieldState extends State<SearchField> {
   @override
   RecipeApi recipeApi = RecipeApi();
 
-  List<String> _matchingFoods = [];
-  void handleSubmitted(String value) async {
-    List<String> matchingFoods = await recipeApi.searchFood(value);
-    setState(() {
-      _matchingFoods = matchingFoods;
-    });
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                SearchResults(matchingFoods: _matchingFoods)));
-  }
-
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
@@ -199,17 +288,17 @@ class _SearchFieldState extends State<SearchField> {
         child: Column(
           children: [
             TextField(
-              onSubmitted: (value) async {
-                List<String> matchingFoods = await recipeApi.searchFood(value);
-                setState(() {
-                  _matchingFoods = matchingFoods;
-                });
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SearchResults(matchingFoods: _matchingFoods)));
-              },
+              // onSubmitted: (value) async {
+              //   List<String> matchingFoods = await recipeApi.searchFood(value);
+              //   setState(() {
+              //     _matchingFoods = matchingFoods;
+              //   });
+              //   Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) =>
+              //               SearchResults(matchingFoods: _matchingFoods)));
+              // },
 
               controller: widget.searchController,
               cursorColor: Colors.black,
@@ -221,14 +310,14 @@ class _SearchFieldState extends State<SearchField> {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
                     color: Colors.black,
-                    width: 0.4,
+                    width: 0.3,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
                     color: Colors.black,
-                    width: 0.5,
+                    width: 3,
                   ),
                 ),
               ),
@@ -237,4 +326,46 @@ class _SearchFieldState extends State<SearchField> {
           ],
         ));
   }
+}
+
+Widget _buildFoodList(List<Recipe> foodList) {
+  if (foodList == null) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  if (foodList.isEmpty) {
+    return const Center(child: Text('No food results found.'));
+  }
+  return Flexible(
+    fit: FlexFit.tight,
+    child: GridView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(),
+        itemCount: foodList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisExtent: 250,
+          crossAxisCount: 1,
+        ),
+        itemBuilder: (context, index) {
+          Recipe recipe = foodList[index];
+
+          return ListTile(
+            title: RecipeCard(
+              title: foodList[index].name,
+              cookTime: foodList[index].totalTime.toString(),
+              calorie: foodList[index].calories.toString(),
+              thumbnailUrl: foodList[index].imageUrl,
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FoodInfoScreen(
+                            recipes: recipe,
+                            // recipeTag: recipees,
+                          )));
+            },
+          );
+        }),
+  );
 }

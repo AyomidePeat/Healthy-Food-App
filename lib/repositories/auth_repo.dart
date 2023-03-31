@@ -3,32 +3,25 @@ import 'package:healthfooddelivery/model/user_details_model.dart';
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
 //import 'package:healthfooddelivery/repositories/auth_repo.dart';
 
-
-
 class AuthenticationMethods {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   Firestore fireStore = Firestore();
   Future<String> signUp(
-      { String name,
-      
-     String email,
-      String password}) async {
+      {String name, String address, String email, String password}) async {
     name.trim();
-   
+    address.trim();
     email.trim();
     password.trim();
     String output = "Something went wrong";
-    if (name != "" &&  email != "" && password != "") {
-
+    if (name != "" && email != "" && password != "" && address != "") {
       try {
         await firebaseAuth.createUserWithEmailAndPassword(
             email: email, password: password);
-           
-          
-          UserDetailsModel user = UserDetailsModel(name: name,);
-        await Firestore.uploadNameToDatabase(
-            user: user
-);
+
+        UserDetailsModel user = UserDetailsModel(
+          name: name, address: address
+        );
+        await Firestore.uploadNameAndAddressToDatabase(user: user);
 
         output = "Success";
       } on FirebaseAuthException catch (e) {
@@ -40,8 +33,7 @@ class AuthenticationMethods {
     return output;
   }
 
-  Future<String> signIn(
-      { String email,  String password}) async {
+  Future<String> signIn({String email, String password}) async {
     email.trim();
     password.trim();
     String output = "Something went wrong";

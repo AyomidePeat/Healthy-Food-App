@@ -46,29 +46,31 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   MenuStuff currentItem = MenuItems.home;
-
+  ZoomDrawerController drawerController = ZoomDrawerController();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        child: ZoomDrawer(
-      borderRadius: 40,
-      angle: -10,
-      style: DrawerStyle.style4,
-      slideWidth: MediaQuery.of(context).size.width * 0.8,
-      // slideHeight: MediaQuery.of(context).size.width * 0.8,
-      showShadow: true,
-      menuBackgroundColor: Colors.white,
-      mainScreen: getScreen(),
-      menuScreen: Builder(builder: (context) {
-        return NavigationPane(
-          currentItem: currentItem,
-          onSelectedItem: (item) {
-            setState(() => currentItem = item);
-            ZoomDrawer.of(context).close();
-          },
-        );
-      }),
-    ));
+      child: ZoomDrawer(
+        borderRadius: 40,
+        angle: -10,
+        controller:drawerController,
+        style: DrawerStyle.defaultStyle,
+        slideWidth: MediaQuery.of(context).size.width * 0.8,
+        showShadow: true,
+        menuBackgroundColor: Colors.white,
+        mainScreen: getScreen(),
+        menuScreen: Builder(builder: (context) {
+          return NavigationPane(
+            currentItem: currentItem,
+            onSelectedItem: (item) {
+              setState(() => currentItem = item);
+              ZoomDrawer.of(context).close();
+              
+            },
+          );
+        }),
+      ),
+    );
   }
 }

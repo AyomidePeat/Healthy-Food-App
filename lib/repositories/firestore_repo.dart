@@ -10,14 +10,14 @@ FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 class Firestore {
-  static Future uploadNameToDatabase({UserDetailsModel user}) async {
+  static Future uploadNameAndAddressToDatabase({UserDetailsModel user}) async {
     await firebaseFirestore
         .collection("users")
         .doc(firebaseAuth.currentUser.uid)
         .set(user.toJson());
   }
 
-  Future<UserDetailsModel> getUserName() async {
+  Future<UserDetailsModel> getUserNameAndAddress() async {
     DocumentSnapshot snapshot = await firebaseFirestore
         .collection('users')
         .doc(firebaseAuth.currentUser.uid)
@@ -32,27 +32,27 @@ class Firestore {
     }
   }
 
-  Future uploadAddressToDatabase({UserDetailsModel address}) async {
+  Future updateAddress({UserDetailsModel address}) async {
     await firebaseFirestore
         .collection("users")
         .doc(firebaseAuth.currentUser.uid)
-        .set(address.toJson());
+        .update(address.toJson());
   }
 
-  Future<UserDetailsModel> getAddress() async {
-    DocumentSnapshot snapshot = await firebaseFirestore
-        .collection('users')
-        .doc(firebaseAuth.currentUser.uid)
-        .get();
-    if (snapshot.exists) {
-      UserDetailsModel user = UserDetailsModel.getModelFromJson(
-        json: snapshot.data() as dynamic,
-      );
-      return user;
-    } else {
-      return null;
-    }
-  }
+  // Future<UserDetailsModel> getAddress() async {
+  //   DocumentSnapshot snapshot = await firebaseFirestore
+  //       .collection('users')
+  //       .doc(firebaseAuth.currentUser.uid)
+  //       .get();
+  //   if (snapshot.exists) {
+  //     UserDetailsModel user = UserDetailsModel.getModelFromJson(
+  //       json: snapshot.data() as dynamic,
+  //     );
+  //     return user;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   Future addToCart({Cart cart}) async {
     await firebaseFirestore
