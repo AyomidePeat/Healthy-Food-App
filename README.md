@@ -1,3 +1,3 @@
-A simple flutter app that signs up and sign in user. It returns a list of food from yummly api.
+A simple food delivery app with user authentication
 
 ![Healthy-Food-App](./healthyfood.png)
