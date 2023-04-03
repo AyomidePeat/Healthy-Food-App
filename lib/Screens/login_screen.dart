@@ -8,6 +8,7 @@ import 'package:healthfooddelivery/repositories/firestore_repo.dart';
 import 'package:healthfooddelivery/widgets/buttons.dart';
 import 'package:healthfooddelivery/widgets/loading_button.dart';
 import 'package:healthfooddelivery/widgets/color.dart';
+import 'package:healthfooddelivery/widgets/screenlayout.dart';
 import 'package:healthfooddelivery/widgets/textButton.dart';
 import 'package:healthfooddelivery/widgets/textfield.dart';
 import 'package:healthfooddelivery/widgets/underlined_textbutton.dart';
@@ -149,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeScreen()));
+                                    builder: (context) => ScreenLayout()));
                           } else {
                             setState(() {
                             isLoading = false;
@@ -169,13 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
-                      // isLoading
-                      //     ? Center(
-                      //         child: Column(children: const[
-                      //         SizedBox(height: 10),
-                      //         CircularProgressIndicator(color: greenColor)
-                      //       ]))
-                      //  : Container(),
+                     
                       const SizedBox(height: 10),
                       TextButtons(
                           onPressed: () {

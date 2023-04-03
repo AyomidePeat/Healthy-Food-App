@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:healthfooddelivery/model/favorite_model.dart';
+import 'package:healthfooddelivery/repositories/firestore_repo.dart';
 
 //import 'package:healthfooddelivery/model/recipe.api.dart';
 import 'package:healthfooddelivery/widgets/color.dart';
@@ -8,11 +10,13 @@ class RecipeCard extends StatefulWidget {
   final String calorie;
   final String cookTime;
   final String thumbnailUrl;
+  final recipes;
   RecipeCard({
     @required this.title,
     @required this.cookTime,
     @required this.calorie,
     @required this.thumbnailUrl,
+    @required this.recipes,
   });
 
   @override
@@ -21,15 +25,27 @@ class RecipeCard extends StatefulWidget {
 
 class _RecipeCardState extends State<RecipeCard> {
   bool isPressed = false;
-
-  void favButton() {
-    setState(() {
-      isPressed = !isPressed;
-    });
-  }
-
+  Firestore firestore = Firestore();
   @override
   Widget build(BuildContext context) {
+    Favourite favItem = Favourite(
+      cost: 15,
+      food: widget.recipes.name,
+      imageUrl: widget.recipes.imageUrl,
+      calorie: widget.recipes.calories.toString(),
+    );
+    void favButton() async {
+      setState(() {
+        isPressed = !isPressed;
+      });
+      if (isPressed == true) {
+        await firestore.addToFavourite(favourite: favItem);
+      }
+      if (isPressed == false) {
+        await firestore.removeFavourite(favourite: favItem);
+      }
+    }
+
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.symmetric(
@@ -104,9 +120,10 @@ class _RecipeCardState extends State<RecipeCard> {
                                   color: greenColor,
                                   fontSize: 16)),
                           SizedBox(width: 7),
-                          Text('${widget.calorie} Cal | ${widget.cookTime} mins',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 13))
+                          Text(
+                              '${widget.calorie} Cal | ${widget.cookTime} mins',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 13))
                         ],
                       ),
                     ),

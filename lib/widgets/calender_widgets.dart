@@ -28,10 +28,12 @@ class _CalenderWidgetState extends State<CalenderWidget> {
     selectedDateStreamController = StreamController<DateTime>();
   }
 
-  void onDaySelected(DateTime day, List events, List date) {
+  String selectedDay;
+  onDaySelected(DateTime day, List events, List date) {
     setState(() {
       selectedDateStreamController.add(day);
     });
+    return day.toString();
   }
 
   @override
@@ -39,52 +41,57 @@ class _CalenderWidgetState extends State<CalenderWidget> {
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height * 0.4,
-      child: TableCalendar(
-        rowHeight: 30,
-        events: _events,
-        onDaySelected: onDaySelected,
-        // height:size.height*0.5 ,
-        calendarController: widget.calenderController,
-        builders: CalendarBuilders(
-          todayDayBuilder: (context, date, events) => Container(
-              margin: const EdgeInsets.all(3.0),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: greenColor, borderRadius: BorderRadius.circular(3.0)),
-              child: Text(
-                date.day.toString(),
-                style: TextStyle(color: Colors.white),
-              )),
-          selectedDayBuilder: (context, date, events) => Container(
-            margin: const EdgeInsets.all(3.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(3.0)),
-            child: Text(
-              date.day.toString(),
-              style: TextStyle(color: Colors.white),
+      child: Column(
+        children: [
+          TableCalendar(
+            rowHeight: 30,
+            events: _events,
+            onDaySelected: onDaySelected,
+            // height:size.height*0.5 ,
+            calendarController: widget.calenderController,
+            builders: CalendarBuilders(
+              todayDayBuilder: (context, date, events) => Container(
+                  margin: const EdgeInsets.all(3.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: greenColor, borderRadius: BorderRadius.circular(3.0)),
+                  child: Text(
+                    date.day.toString(),
+                    style: TextStyle(color: Colors.white),
+                  )),
+              selectedDayBuilder: (context, date, events) => Container(
+                margin: const EdgeInsets.all(3.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(3.0)),
+                child: Text(
+                  date.day.toString(),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            headerStyle: HeaderStyle(
+              centerHeaderTitle: true,
+              formatButtonDecoration: BoxDecoration(
+                color: greenColor,
+                borderRadius: BorderRadius.circular(22.0),
+              ),
+              formatButtonTextStyle: const TextStyle(color: Colors.white),
+              formatButtonShowsNext: false,
+            ),
+            initialCalendarFormat: CalendarFormat.month,
+            calendarStyle: CalendarStyle(
+                todayColor: Colors.greenAccent,
+                selectedColor: Theme.of(context).primaryColor,
+                todayStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10.0,
+                    color: Colors.white)),
           ),
-        ),
-        startingDayOfWeek: StartingDayOfWeek.monday,
-        headerStyle: HeaderStyle(
-          centerHeaderTitle: true,
-          formatButtonDecoration: BoxDecoration(
-            color: greenColor,
-            borderRadius: BorderRadius.circular(22.0),
-          ),
-          formatButtonTextStyle: TextStyle(color: Colors.white),
-          formatButtonShowsNext: false,
-        ),
-        initialCalendarFormat: CalendarFormat.month,
-        calendarStyle: CalendarStyle(
-            todayColor: Colors.greenAccent,
-            selectedColor: Theme.of(context).primaryColor,
-            todayStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 10.0,
-                color: Colors.white)),
+      
+        ],
       ),
     );
   }

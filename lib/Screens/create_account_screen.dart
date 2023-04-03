@@ -227,7 +227,7 @@ class _CreateAccountScreen extends State<CreateAccountScreen> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
+                                        builder: (context) => LoginScreen()));
                               } else {
                                 setState(() {
                                   isLoading = false;

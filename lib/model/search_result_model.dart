@@ -1,25 +1,23 @@
+
+
 class SearchResult {
   final String name;
- 
   final String imageUrl;
-  
-  SearchResult({this.name, this.imageUrl  });
-//this.images,
-  factory SearchResult.fromJson(dynamic json) {
-    return SearchResult(
-      name: json['name'] as String,
-     // images: json['images'][0]['hostedLargeUrl'] as String,
-     
-    );
-  }
-  static List<SearchResult> recipesFromSnapshot(List snapshot) {
-    return snapshot.map((data) {
-      return SearchResult.fromJson(data);
-    }).toList();
-  }
+   final int calories;
+  final int totalTime;
+SearchResult({  this.name, this.imageUrl,this.calories, this.totalTime,  
 
-  @override
-  String toString() {
-    return 'SearchResult{name:$name,  }'; //image:$images,
+  });
+
+  factory SearchResult.fromJson(Map<String, dynamic> json) {
+    final recipe = json['recipe'];
+
+    return SearchResult(
+      name: recipe['label'],
+      imageUrl: recipe['image'],
+        calories: recipe['calories'].toInt(),
+      totalTime: recipe['totalTime'].toInt(),
+       
+    );
   }
 }

@@ -1,11 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:healthfooddelivery/Screens/home_screen.dart';
-
-
 import 'firebase_options.dart';
-
- import 'package:healthfooddelivery/Screens/welcome_screen.dart';
+import 'package:healthfooddelivery/Screens/welcome_screen.dart';
 
 
   
@@ -32,4 +28,4 @@ class MyApp extends StatelessWidget {
            primarySwatch: Colors.green,
           fontFamily: "Montserrat",
         ),
-        home: HomeScreen());}}
+        home: WelcomeScreen());}}

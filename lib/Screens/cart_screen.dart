@@ -16,7 +16,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
   Firestore firebaseFirestore = Firestore();
   TextEditingController addressController = TextEditingController();
   bool isSubmitted = false;
@@ -26,9 +25,26 @@ class _CartScreenState extends State<CartScreen> {
     super.dispose();
   }
 
-  
+   getAddress() {
+    FutureBuilder<UserDetailsModel>(
+      future: firebaseFirestore.getUserNameAndAddress(),
+      builder:
+          (BuildContext context, AsyncSnapshot<UserDetailsModel> snapshot) {
+        {
+          if (snapshot.hasData) {
+            return Text(
+              '${snapshot.data.address}',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            );
+          } else {
+            return const Text('', style: TextStyle(color: Colors.black));
+          }
+        }
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
-    
     List<Cart> cartItems;
     return Scaffold(
       appBar: AppBar(
@@ -37,9 +53,8 @@ class _CartScreenState extends State<CartScreen> {
         automaticallyImplyLeading: false,
         leading: IconButton(
             onPressed: () {
-               Navigator.push(context,
-                        MaterialPageRoute(builder: (context) =>NavigationScreen()));
-                
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NavigationScreen()));
             },
             icon: Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.transparent,
@@ -75,9 +90,8 @@ class _CartScreenState extends State<CartScreen> {
                                     UserDetailsModel userAddress =
                                         UserDetailsModel(
                                             address: addressController.text);
-                                    await firebaseFirestore
-                                        .updateAddress(
-                                            address: userAddress);
+                                    await firebaseFirestore.updateAddress(
+                                        address: userAddress);
                                     {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
@@ -119,7 +133,23 @@ class _CartScreenState extends State<CartScreen> {
                   )
                 ],
               ),
-              UnderlinedTextButton(text: getAddress().toString() ,)
+              FutureBuilder<UserDetailsModel>(
+      future: firebaseFirestore.getUserNameAndAddress(),
+      builder:
+          (BuildContext context, AsyncSnapshot<UserDetailsModel> snapshot) {
+        {
+          if (snapshot.hasData) {
+            return Text(
+              '${snapshot.data.address}',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            );
+          } else {
+            return const Text('', style: TextStyle(color: Colors.black));
+          }
+        }
+      },
+    )
+              
             ],
           ),
         ),
@@ -176,16 +206,5 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
- Widget getAddress() {
-   Firestore firebaseFirestore = Firestore();
-     FutureBuilder<UserDetailsModel>(
-                    future: firebaseFirestore.getUserNameAndAddress(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<UserDetailsModel> snapshot) 
-                      {
-                        if (snapshot.hasData) {
-                          return Text('${snapshot.data.address}'); }
-                          },
-                          );}
-                          }
   
+}

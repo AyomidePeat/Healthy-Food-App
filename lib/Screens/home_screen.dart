@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthfooddelivery/Screens/search_results_screen.dart';
 import 'package:healthfooddelivery/model/recipe.api.dart';
+import 'package:healthfooddelivery/model/search_result_model.dart';
 
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
 
@@ -53,8 +54,6 @@ class _HomeScreenState extends State<HomeScreen>
       print('Failed to load food results: $e');
     }
   }
-
-  String query;
 
   Firestore firestore = Firestore();
   TextEditingController searchController = TextEditingController();
@@ -152,8 +151,8 @@ class _HomeScreenState extends State<HomeScreen>
                                   color: Colors.yellow)
                             ],
                           ),
-                          const SizedBox(
-                            width: 300,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width>500?MediaQuery.of(context).size.width:300,
                             child: Text(
                               'As a new user you have access to 20 discount tickects and a free apointment with the nutritionist via audio or video call. \nStart Exploring!',
                               overflow: TextOverflow.fade,
@@ -172,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen>
               TabBar(
                 isScrollable: true,
                 unselectedLabelColor: Colors.grey,
-                controller: _tabController,
+                controller: _tabController,indicatorSize: TabBarIndicatorSize.label,
                 indicator: BoxDecoration(
                     color: greenColor, borderRadius: BorderRadius.circular(10)),
                 tabs: [
@@ -185,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen>
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
-                       border: Border.all(color: Colors.grey, width: 0.4),
+                        border: Border.all(color: Colors.grey, width: 0.4),
                       ),
                     ),
                   ),
@@ -194,8 +193,9 @@ class _HomeScreenState extends State<HomeScreen>
                       width: 100,
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text('Lunch',
-                            ),
+                        child: Text(
+                          'Lunch',
+                        ),
                       ),
                       decoration: BoxDecoration(
                           color: Colors.transparent,
@@ -265,66 +265,89 @@ class _HomeScreenState extends State<HomeScreen>
 }
 
 class SearchField extends StatefulWidget {
-  SearchField({
+  const SearchField({
     Key key,
     @required this.searchController,
   }) : super(key: key);
 
-  final TextEditingController searchController;
+  final searchController;
 
   @override
   State<SearchField> createState() => _SearchFieldState();
 }
 
 class _SearchFieldState extends State<SearchField> {
-  @override
+  bool isLoading = false;
+  List<SearchResult> searchResults = [];
   RecipeApi recipeApi = RecipeApi();
+  @override
+  void initState() {
+    super.initState();
+    loadSearchResults();
+  }
+
+  Future<void> loadSearchResults() async {
+    setState(() {
+      isLoading = true;
+    });
+    final query = widget.searchController.text.trim();
+    try {
+      searchResults = await recipeApi.getSearchResults(query);
+      setState(() {});
+      if (searchResults.isNotEmpty) {
+        String firstRecipeName = searchResults[0].name;
+        print(firstRecipeName);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SearchResults(
+                    results: searchResults, isLoading: isLoading)));
+      } else {
+        print('result is empty');
+      }
+    } catch (e) {
+      print('Failed to load food results: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void dispose() {
+    widget.searchController.dispose();
+    super.dispose();
+  }
 
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Column(
-          children: [
-            TextField(
-              // onSubmitted: (value) async {
-              //   List<String> matchingFoods = await recipeApi.searchFood(value);
-              //   setState(() {
-              //     _matchingFoods = matchingFoods;
-              //   });
-              //   Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) =>
-              //               SearchResults(matchingFoods: _matchingFoods)));
-              // },
-
-              controller: widget.searchController,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                hintText: "Search for the healthy food",
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
-                    width: 0.3,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
-                    width: 3,
-                  ),
-                ),
+    return Column(
+      children: [
+        TextField(
+          controller: widget.searchController,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            hintText: "Search for the healthy food",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: Colors.black,
+                width: 0.3,
               ),
-              // keyboardType: TextInput,
             ),
-          ],
-        ));
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: Colors.black,
+                width: 3,
+              ),
+            ),
+          ),
+          onSubmitted: (value) => loadSearchResults(),
+        ),
+      ],
+    );
   }
 }
 
@@ -334,7 +357,7 @@ Widget _buildFoodList(List<Recipe> foodList) {
   }
 
   if (foodList.isEmpty) {
-    return const Center(child: Text('No food results found.'));
+    return const Center(child: Text('No food found.'));
   }
   return Flexible(
     fit: FlexFit.tight,
@@ -350,7 +373,7 @@ Widget _buildFoodList(List<Recipe> foodList) {
           Recipe recipe = foodList[index];
 
           return ListTile(
-            title: RecipeCard(
+            title: RecipeCard(recipes:recipe ,
               title: foodList[index].name,
               cookTime: foodList[index].totalTime.toString(),
               calorie: foodList[index].calories.toString(),
@@ -362,7 +385,6 @@ Widget _buildFoodList(List<Recipe> foodList) {
                   MaterialPageRoute(
                       builder: (context) => FoodInfoScreen(
                             recipes: recipe,
-                            // recipeTag: recipees,
                           )));
             },
           );

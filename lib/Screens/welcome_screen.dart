@@ -39,17 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     );
                   },
                 ),
-              
-                  
-                // Positioned(
-                //   bottom: 0.0,
-                //   left: 0.0,
-                //   right: 0.0,
-                //   child: Column(
-                //     children: [
-                //                          ],
-                //   ),
-                // ),
+           
               ],
             ),
           ),
@@ -59,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Column(
               
               children: <Widget>[
- // const  SizedBox(height: 10.0),
+ 
                                      const Text(
                 "Taste Fresh Delicious Meal Anytime and Anywhere",
                 textAlign: TextAlign.center,
@@ -67,7 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   color: greenColor,
                   fontSize:15,
                   fontFamily: 'Montserrat',
-                  //fontWeight: FontWeight.bold,
+                
                 ),
               ),
               const  SizedBox(height: 25.0),
