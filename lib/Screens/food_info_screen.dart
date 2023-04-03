@@ -231,10 +231,10 @@ class _FoodInfoScreenState extends State<FoodInfoScreen> {
                                     await firestore.addToCart(cart: cartItem);
                                     {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                          .showSnackBar(const SnackBar(margin:EdgeInsets.only(bottom:50),
                                               duration:
                                                   Duration(milliseconds: 1000),
-                                              width: 150,
+                                          //    width: 150,
                                               behavior:
                                                   SnackBarBehavior.floating,
                                               backgroundColor: greenColor,

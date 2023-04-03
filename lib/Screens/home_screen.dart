@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:healthfooddelivery/Screens/search_results_screen.dart';
 import 'package:healthfooddelivery/model/recipe.api.dart';
 import 'package:healthfooddelivery/model/search_result_model.dart';
-
 import 'package:healthfooddelivery/repositories/firestore_repo.dart';
-
 import 'package:healthfooddelivery/Screens/food_info_screen.dart';
-
 import 'package:healthfooddelivery/model/recipe_model.dart';
-
 import 'package:healthfooddelivery/model/user_details_model.dart';
 import 'package:healthfooddelivery/widgets/color.dart';
 import 'package:healthfooddelivery/widgets/menu_widgets.dart';
 import 'package:healthfooddelivery/widgets/recipe_card.dart';
 
-import 'package:provider/provider.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
