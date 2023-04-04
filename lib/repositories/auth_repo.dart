@@ -18,9 +18,7 @@ class AuthenticationMethods {
         await firebaseAuth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-        UserDetailsModel user = UserDetailsModel(
-          name: name, address: address
-        );
+        UserDetailsModel user = UserDetailsModel(name: name, address: address);
         await Firestore.uploadNameAndAddressToDatabase(user: user);
 
         output = "Success";
@@ -50,5 +48,13 @@ class AuthenticationMethods {
       output = "Please fill up all the fields.";
     }
     return output;
+  }
+
+  Future<String> signOut() async {
+    try {
+      await firebaseAuth.signOut();
+    } on FirebaseAuthException catch (e) {
+      e.message.toString();
+    }
   }
 }
