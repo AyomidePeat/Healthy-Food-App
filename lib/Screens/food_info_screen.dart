@@ -28,33 +28,32 @@ class _FoodInfoScreenState extends State<FoodInfoScreen> {
   Firestore firestore = Firestore();
   @override
   bool isPressed = false;
- 
-  
+  bool isAdded = false;
+
   bool textRead = false;
   bool readMore = false;
   Widget build(BuildContext context) {
-  
     Cart cartItem = Cart(
       cost: 15,
       food: widget.recipes.name,
       imageUrl: widget.recipes.imageUrl,
       calorie: widget.recipes.calories.toString(),
     );
-      Favourite favItem = Favourite(
+    Favourite favItem = Favourite(
       cost: 15,
       food: widget.recipes.name,
       imageUrl: widget.recipes.imageUrl,
       calorie: widget.recipes.calories.toString(),
     );
-     void favButton()async {
-    setState(() {
-      isPressed = !isPressed;
-    });
-    if (isPressed == true) {
-     await firestore.addToFavourite(favourite: favItem);
-     
+    void favButton() async {
+      setState(() {
+        isPressed = !isPressed;
+      });
+      if (isPressed == true) {
+        await firestore.addToFavourite(favourite: favItem);
+      }
     }
-  }
+
     return Scaffold(
         // title:
         body:
@@ -227,24 +226,39 @@ class _FoodInfoScreenState extends State<FoodInfoScreen> {
                             SizedBox(
                               width: double.infinity,
                               child: ClickButtons(
-                                  onpressed: () async {
-                                    await firestore.addToCart(cart: cartItem);
-                                    {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(margin:EdgeInsets.only(bottom:50),
-                                              duration:
-                                                  Duration(milliseconds: 1000),
-                                          //    width: 150,
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              backgroundColor: greenColor,
-                                              content: Text("Added to Cart",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 16))));
-                                    }
-                                  },
-                                  text: "Add"),
+                                  onpressed: isAdded
+                                      ? () async {
+                                          await firestore.deleteCartItem(cart:cartItem);
+                                           setState(() {
+                                              isAdded = false;
+                                            });
+                                        }
+                                      : () async {
+                                          await firestore.addToCart(
+                                              cart: cartItem);
+                                          {
+                                            setState(() {
+                                              isAdded = true;
+                                            });
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 50),
+                                                    duration: Duration(
+                                                        milliseconds: 1000),
+                                                    //    width: 150,
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor: greenColor,
+                                                    content: Text(
+                                                        "Added to Cart",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontSize: 16))));
+                                          }
+                                        },
+                                  text: isAdded ? "Remove from cart" : "Add"),
                             ),
                           ],
                         ),

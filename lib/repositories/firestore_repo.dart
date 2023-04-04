@@ -62,14 +62,20 @@ class Firestore {
     });
   }
 
-  Future deleteFromCart() async {
-    await firebaseFirestore
-        .collection("users")
-        .doc(firebaseAuth.currentUser.uid)
-        .collection("cart")
-        .doc()
-        .delete();
-  }
+Future deleteCartItem({Cart cart}) async {
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(firebaseAuth.currentUser.uid)
+      .collection('cart-items')
+      .where('food', isEqualTo: cart.food)
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    querySnapshot.docs.forEach((doc) {
+      doc.reference.delete();
+    });
+  });
+}
+
 
   String listenToChanges() {
     String result = '';

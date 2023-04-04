@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthfooddelivery/repositories/firestore_repo.dart';
 
 import 'package:healthfooddelivery/widgets/color.dart';
 
@@ -14,6 +15,7 @@ class CartItemWidget extends StatefulWidget {
 }
 
 class _CartItemWidgetState extends State<CartItemWidget> {
+  Firestore firestore = Firestore();
   int counter = 1;
   void incrementer() {
     setState(() {
@@ -21,7 +23,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     });
   }
 
-  void decrementer() {
+  void decrementer() async {
+   
     setState(() { if (counter > 0)
       counter--;
     });
@@ -49,19 +52,27 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20.0, right: 8, left : 8,),
+            padding: const EdgeInsets.only(
+              top: 20.0,
+              right: 8,
+              left: 8,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(width: 180, 
-                  child: Text(widget.title, overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold,
+                SizedBox(
+                  width: 180,
+                  child: Text(widget.title,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
                         fontSize: 14,
                       )),
                 ),
                 Text('\$ ${widget.cost.toString()}',
-                    style: const TextStyle(fontWeight: FontWeight.w700,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
                       color: greenColor,
                       fontSize: 13,
                     )),
@@ -69,7 +80,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             ),
           ),
           Padding(
-            padding:  const EdgeInsets.only(top: 23.0),
+            padding: const EdgeInsets.only(top: 23.0),
             child: SizedBox(
               width: buttonSize,
               height: buttonSize,
@@ -85,13 +96,16 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             ),
           ),
           Padding(
-            padding:  const EdgeInsets.only(top: 27.0),
+            padding: const EdgeInsets.only(top: 27.0),
             child: AnimatedSwitcher(
               key: ValueKey(counter),
               child: Text('$counter',
-                  style: const TextStyle(color: Colors.black, fontSize: 11, fontWeight:  FontWeight.bold, )),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  )),
               transitionBuilder: (Widget child, Animation<double> animation) {
-                
                 return ScaleTransition(
                   scale: animation,
                   child: child,
@@ -101,7 +115,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             ),
           ),
           Padding(
-            padding:  const EdgeInsets.only(top: 23.0),
+            padding: const EdgeInsets.only(top: 23.0),
             child: SizedBox(
               width: buttonSize,
               height: buttonSize,
