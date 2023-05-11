@@ -1,14 +1,14 @@
-
-
 class Recipe {
   final String name;
   final String imageUrl;
- 
-    final int calories;
+  final int calories;
   final int totalTime;
 
- Recipe( {  this.name, this.imageUrl,this.calories,  this.totalTime,
-
+  Recipe({
+    this.name,
+    this.imageUrl,
+    this.calories,
+    this.totalTime,
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
@@ -17,7 +17,7 @@ class Recipe {
     return Recipe(
       name: recipe['label'],
       imageUrl: recipe['image'],
-       calories: recipe['calories'].toInt(),
+      calories: recipe['calories'].toInt(),
       totalTime: recipe['totalTime'].toInt(),
     );
   }

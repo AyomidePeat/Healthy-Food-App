@@ -45,20 +45,16 @@ class NavigationPane extends StatelessWidget {
    
         data: ThemeData.light(),
         child: Scaffold(
-           // backgroundColor: Colors.indigo,
+          
             body: SafeArea(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-              //  IconButton(icon:Icon(Icons.cancel, color: Colors.black, ),
-               // onPressed:(){Navigator.pop(context);}),
+             
                                Spacer(),
 
                 ...MenuItems.all.map(buildMenuItem).toList(),
-               // SizedBox(height:15),
-               //// SizedBox(width:80,child: ClickButtons(onpressed: Navigator.push(context,MaterialPageRoute(builder:(context)=>LoginScreen())), text:"Log Out"),
-               
-              //  ),
+             
                 Spacer(flex: 2),
               ],
             ))),

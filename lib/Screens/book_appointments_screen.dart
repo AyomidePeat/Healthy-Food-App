@@ -17,18 +17,18 @@ class BookAppointmentsScreen extends StatefulWidget {
 class _BookAppointmentsScreenState extends State<BookAppointmentsScreen> {
   TextEditingController appointmentController = TextEditingController();
 
-  CalendarController calenderController;
+  var calenderController;
   @override
   void initState() {
     super.initState();
-    calenderController = CalendarController();
+    calenderController = CalendarBuilders();
   }
 
   @override
   void dispose() {
     appointmentController.dispose;
     super.dispose();
-    calenderController.dispose();
+    //calenderController.dispose();
   }
 
   bool value1 = false;

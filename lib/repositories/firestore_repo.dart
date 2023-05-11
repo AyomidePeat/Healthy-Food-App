@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthfooddelivery/model/cart_model.dart';
 import 'package:healthfooddelivery/model/favorite_model.dart';

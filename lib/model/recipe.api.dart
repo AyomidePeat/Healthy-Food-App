@@ -1,11 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:healthfooddelivery/model/recipe_model.dart';
 import 'package:healthfooddelivery/model/search_result_model.dart';
-
-import 'package:http/http.dart' as http;
-
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RecipeApi {
@@ -30,6 +25,7 @@ class RecipeApi {
       throw Exception('Failed to load food results');
     }
   }
+
   Future<List<SearchResult>> getSearchResults(String query) async {
     String appId = '0fab63d1';
     String appKey = '2af892bf7c23f230b8ce6f0245b8d3b6';
@@ -52,4 +48,3 @@ class RecipeApi {
     }
   }
 }
-
